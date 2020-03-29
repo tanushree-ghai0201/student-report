@@ -1,0 +1,473 @@
+#include<iostream>
+#include<stdlib.h>
+#include<fstream>
+#include<clear.h>
+#include<iomanip>
+using namespace std;
+class stu
+{
+    int roll;
+    char name[30];
+    int marks[5];//in order Phy Chem Math Eng Comp
+    float per;
+    char grade;
+    void per_grade_allot()
+    {
+        per=marks[0]+marks[1]+marks[2]+marks[3]+marks[4]; //per=sum of marks
+        per=per/5;
+
+        if(per>=60)
+            grade='A';
+        else if(per>=50)
+            grade='B';
+        else if(per>=33)
+            grade='C';
+        else
+            grade='F';
+    }
+
+public:
+    void Enter_data()
+    {
+        cout<<"\nEnter Roll.no :";
+        cin>>roll;
+        cout<<"\nEnter Name :";
+        cin>>name;
+        cout<<"\nEnter Marks";
+        cout<<"\nPhysics   :";
+        cin>>marks[0];
+        cout<<"\nChemistry :";
+        cin>>marks[1];
+        cout<<"\nMaths     :";
+        cin>>marks[2];
+        cout<<"\nEnglish   :";
+        cin>>marks[3];
+        cout<<"\nComputer  :";
+        cin>>marks[4];
+        per_grade_allot();
+}
+
+    void display(int line)
+    {
+        gotoxy(0,line);     cout<<"|";
+        gotoxy(1,line);     cout<<roll;
+        gotoxy(7,line);     cout<<"|";
+        gotoxy(8,line);     cout<<name;
+        gotoxy(39,line);     cout<<"|";
+        gotoxy(40,line);    cout<<marks[0];
+        gotoxy(46,line);     cout<<"|";
+        gotoxy(47,line);    cout<<marks[1];
+        gotoxy(53,line);     cout<<"|";
+        gotoxy(54,line);    cout<<marks[2];
+        gotoxy(60,line);     cout<<"|";
+        gotoxy(61,line);    cout<<marks[3];
+        gotoxy(67,line);     cout<<"|";
+        gotoxy(68,line);    cout<<marks[4];
+        gotoxy(74,line);     cout<<"|";
+        gotoxy(75,line);    cout<<per;
+        gotoxy(87,line);     cout<<"|";
+        gotoxy(91,line);    cout<<grade;
+        gotoxy(95,line);     cout<<"|";
+    }
+
+    void RC_display()
+    {
+        system("cls");
+        cout<<"\n           STUDENT REPORT CARD           ";
+        cout<<"\n*****************************************";
+        cout<<"\n* ROLL : "<<roll;
+        cout<<"\n* NAME : "<<name;
+        cout<<"\n*****************************************";
+        cout<<"\n* MARKS";
+        cout<<"\n* Physics   : "<<marks[0];
+        cout<<"\n* Chemistry : "<<marks[1];
+        cout<<"\n* Maths     : "<<marks[2];
+        cout<<"\n* English   : "<<marks[3];
+        cout<<"\n* Computer  : "<<marks[4];
+        cout<<"\n*****************************************";
+        cout<<"\n* PERCENTAGE : "<<per;
+        cout<<"\n* GRADE      : "<<grade;
+        cout<<"\n*****************************************";
+    }
+
+    int ret_roll()
+    {
+        return roll;
+    }
+};
+void Create();
+void Search(int roll);
+void Modify(int roll);
+void Delete(int roll);
+void intro()
+      {
+        int i=0;
+        gotoxy(20,2);
+        for(i=0;i<7;i++)
+            cout<<'*';
+            cout<<"STUDENT ";
+        for(i=0;i<7;i++)
+            cout<<'*';
+                  gotoxy(18,4);
+        for(i=0;i<7;i++)
+            cout<<'*';
+            cout<<"REPORT CARD";
+        for(i=0;i<7;i++)
+            cout<<'*';
+            cout<<"\n";
+           cout<<setw(35)<<"PROJECT\n";
+           cout<<setw(35)<<"MADE BY\n";
+           cout<<setw(38)<<"TANUSHREE GHAI\n";
+           cout<<setw(33)<<"XII -B";
+
+cout<<"\n\nPRESS ENTER";
+getch();
+      }
+
+main()
+{
+    remove("record.dat");
+    remove("temp.dat");
+    stu S;
+
+    fstream record;
+
+    char cho;
+    int roll,line;
+  intro();
+    do
+    {
+
+Main_menu:
+        ;
+        system("cls");
+        cout<<"MAIN MENU";
+        cout<<"\n1. Entry/Edit Menu";
+        cout<<"\n2. Result Menu";
+        cout<<"\n3. Exit";
+        cout<<"\n\n";
+        cout<<"\nEnter Choice :";
+        cin>>cho;
+
+        switch(cho)
+        {
+
+        case '1':
+        {
+            do
+            {
+Edit_menu:
+            system("cls");
+            cout<<"ENTRY / EDIT MENU";
+            cout<<"\n1. Create a record";
+            cout<<"\n2. Display all record";
+            cout<<"\n3. Search for a record";
+            cout<<"\n4. Modify a record";
+            cout<<"\n5. Delete a record";
+            cout<<"\n6. Go back to Main Menu";
+            cout<<"\n\n";
+            cout<<"\nEnter Choice :";
+            cin>>cho;
+
+            switch(cho)
+            {
+
+            case '1':
+            {
+                system("cls");
+                Create();
+                goto def_E;
+            }
+
+            case '2':
+            {
+                line=2;
+                system("cls");
+                record.open("record.dat",ios::app|ios::out|ios::in|ios::binary);
+              gotoxy(0,line);     cout<<"|";
+        gotoxy(1,line);     cout<<"ROLL";
+        gotoxy(7,line);     cout<<"|";
+        gotoxy(8,line);     cout<<"NAME";
+        gotoxy(39,line);     cout<<"|";
+        gotoxy(40,line);    cout<<"PHYSICS";
+        gotoxy(46,line);     cout<<"|";
+        gotoxy(47,line);    cout<<"CHEMISTRY";
+        gotoxy(53,line);     cout<<"|";
+        gotoxy(54,line);    cout<<"MATHS";
+        gotoxy(60,line);     cout<<"|";
+        gotoxy(61,line);    cout<<"ENGLISH";
+        gotoxy(67,line);     cout<<"|";
+        gotoxy(68,line);    cout<<"COMUTER";
+        gotoxy(74,line);     cout<<"|";
+        gotoxy(75,line);    cout<<"PERCENTAGE";
+        gotoxy(87,line);     cout<<"|";
+        gotoxy(91,line);    cout<<"GRADE";
+        gotoxy(95,line);     cout<<"|";
+                record.read((char*)&S,sizeof(S));
+                while(!record.eof())
+                {
+                    line+=1;
+                    S.display(line);
+                    record.read((char*)&S,sizeof(S));
+
+                }
+                record.close();
+                goto def_E;
+            }
+
+            case '3':
+            {
+                system("cls");
+                cout<<"\nEnter roll no :";
+                cin>>roll;
+                Search(roll);
+                goto def_E;
+            }
+
+            case '4':
+            {
+                system("cls");
+                cout<<"\nEnter roll no :";
+                cin>>roll;
+                Modify(roll);
+                goto def_E;
+            }
+
+            case '5':
+            {
+                system("cls");
+                cout<<"\nEnter roll no :";
+                cin>>roll;
+                Delete(roll);
+                goto def_E;
+            }
+
+            case '6':
+            {
+                goto Main_menu;
+            }
+
+            default:
+            {
+def_E:
+                cout<<"\n\n\n";
+                cout<<"\nEnter C to continue";
+                cout<<"\nEnter E to exit to Main Menu";
+                cout<<"\nChoice :";
+                cin>>cho;
+                if(cho=='E' || cho=='e')
+                    goto Main_menu;
+                else
+                    goto Edit_menu;
+            }
+
+            }
+
+            }while(1);
+        }
+
+        case '2':
+        {
+            do
+            {
+Result_menu:
+            system("cls");
+            cout<<"RESULT MENU";
+            cout<<"\n1. Class result";
+            cout<<"\n2. Student record card";
+            cout<<"\n3. Go back to Main Menu";
+            cout<<"\n\n";
+            cout<<"\nEnter Choice :";
+            cin>>cho;
+
+            switch(cho)
+            {
+
+            case '1':
+            {
+                line=2;
+                system("cls");
+                record.open("record.dat",ios::app|ios::out|ios::in|ios::binary);
+                record.read((char*)&S,sizeof(S));
+                 gotoxy(0,line);     cout<<"|";
+        gotoxy(1,line);     cout<<"ROLL";
+        gotoxy(7,line);     cout<<"|";
+        gotoxy(8,line);     cout<<"NAME";
+        gotoxy(39,line);     cout<<"|";
+        gotoxy(40,line);    cout<<"PHYSICS";
+        gotoxy(46,line);     cout<<"|";
+        gotoxy(47,line);    cout<<"CHEMISTRY";
+        gotoxy(53,line);     cout<<"|";
+        gotoxy(54,line);    cout<<"MATHS";
+        gotoxy(60,line);     cout<<"|";
+        gotoxy(61,line);    cout<<"ENGLISH";
+        gotoxy(67,line);     cout<<"|";
+        gotoxy(68,line);    cout<<"COMUTER";
+        gotoxy(74,line);     cout<<"|";
+        gotoxy(75,line);    cout<<"PERCENTAGE";
+        gotoxy(87,line);     cout<<"|";
+        gotoxy(91,line);    cout<<"GRADE";
+        gotoxy(95,line);     cout<<"|";
+                while(!record.eof())
+                { line+=1;
+                    S.display(line);
+                    record.read((char*)&S,sizeof(S));
+
+                }
+                record.close();
+                goto def_R;
+            }
+
+            case '2':
+            {
+                system("cls");
+                cout<<"\nEnter roll no :";
+                cin>>roll;
+                Search(roll);
+                goto def_R;
+            }
+            case '3':
+                {
+                    goto Main_menu;
+                }
+
+            default:
+            {
+def_R:
+                cout<<"\n\n\n";
+                cout<<"\nEnter C to continue";
+                cout<<"\nEnter E to exit to Main Menu";
+                cout<<"\nChoice :";
+                cin>>cho;
+                if(cho=='E' || cho=='e')
+                    goto Main_menu;
+                else
+                    goto Result_menu;
+            }
+
+            }
+
+            }while(1);
+
+        }
+
+        case '3':
+        {
+            system("cls");
+            cout<<"\nEXITING PROGRAM!!!";
+            goto End;
+        }
+        default:
+        {
+def:
+            system("cls");
+            cout<<"\nEnter C to continue";
+            cout<<"\nEnter E to exit";
+            cout<<"\nChoice :";
+            cin>>cho;
+            if(cho=='E' || cho=='e')
+                goto End;
+            else
+                break;
+        }
+        }
+        }
+    while(1);
+
+End:
+    ;
+
+}
+
+
+
+void Create()
+{
+    system("cls");
+    stu obj;
+    int n;
+    cout<<"Enter No Of Students";
+    cin>>n;
+    fstream record;
+    record.open("record.dat",ios::app|ios::out|ios::in|ios::binary);
+for(int i=0;i<n;i++)
+{
+    obj.Enter_data();
+
+    record.write((char*)&obj,sizeof(stu));
+}
+    record.close();
+}
+
+void Search(int roll)
+{
+    stu obj;
+    fstream record;
+    system("cls");
+    record.open("record.dat",ios::app|ios::out|ios::in|ios::binary);
+    record.read((char*)&obj,sizeof(obj));
+    while(!record.eof())
+    {
+        if(roll==obj.ret_roll())
+        {
+            obj.RC_display();
+            break;
+        }
+        record.read((char*)&obj,sizeof(obj));
+    }
+    record.close();
+}
+
+void Modify(int roll)
+{
+    stu obj;
+    fstream record,temp;
+    system("cls");
+    record.open("record.dat",ios::app|ios::out|ios::in|ios::binary);
+    temp.open("temp.dat",ios::app|ios::out|ios::in|ios::binary);
+    record.read((char*)&obj,sizeof(obj));
+    while(!record.eof())
+    {
+        if(roll==obj.ret_roll())
+        {
+            obj.Enter_data();
+        }
+        temp.write((char*)&obj,sizeof(obj));
+        record.read((char*)&obj,sizeof(obj));
+    }
+    record.close();
+    temp.close();
+    remove("record.dat");
+    rename("temp.dat","record.dat");
+}
+
+void Delete(int roll)
+{
+    stu obj;
+    fstream record,temp;
+    system("cls");
+    int flag=0;
+    record.open("record.dat",ios::app|ios::out|ios::in|ios::binary);
+    temp.open("temp.dat",ios::app|ios::out|ios::in|ios::binary);
+    record.read((char*)&obj,sizeof(obj));
+    while(!record.eof())
+    {
+        if(roll != obj.ret_roll())
+        {
+            temp.write((char*)&obj,sizeof(obj));
+        }
+        else
+            flag=1;
+        record.read((char*)&obj,sizeof(obj));
+    }
+
+    if(flag==1)
+        cout<<"\nRECORD DELETED!!";
+    else
+        cout<<"\nRECORD NOT FOUND";
+
+    record.close();
+    temp.close();
+    remove("record.dat");
+    rename("temp.dat","record.dat");
+}
